@@ -41,7 +41,7 @@ MultiOptix/
 ├── zemax/             # Zemax files & data export & processing
 ├── rcwa/              # RCWA integration layer or scripts (e.g., S4 or Ansys Lumerical RCWA)
 ├── fdtd/              # FDTD integration layer or scripts (e.g., MEEP or Ansys Lumerical FDTD)
-├── examples/          # Sample projects and Jupyter notebooks
+├── examples/          # Sample projects, Python files and Jupyter notebooks
 ├── docs/              # Documentation and usage guide
 └── README.md
 ```
