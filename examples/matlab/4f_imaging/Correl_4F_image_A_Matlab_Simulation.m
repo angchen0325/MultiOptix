@@ -6,247 +6,246 @@ clear;
 close all;
 clc;
 
-%% 创建像素阵列
-len = 512; % 像素阵列的长度（像素数）
-cen = len/2 + 1; % 像素阵列的中心位置（像素坐标）
-dx = 5.0e-6;    % 像素间距，单位为米(m)  
-df = 1/(len*dx);   % 空间频率域的采样间隔，单位为1/m（周期/米）
-%% 创建输入对象
-%photo_source = imread('poles2.jpg'); % 读取图片文件作为输入对象（被注释）
+%% Create pixel array
+len = 512; % Length of pixel array (number of pixels)
+cen = len/2 + 1; % Center position of pixel array (pixel coordinates)
+dx = 5.0e-6;    % Pixel spacing in meters (m)  
+df = 1/(len*dx);   % Spatial frequency domain sampling interval in 1/m (cycles/meter)
+%% Create input object
+%photo_source = imread('poles2.jpg'); % Read image file as input object (commented)
 %object_photo = photo_source;
 
-object = imread('ImB.jpg'); % 读取图片文件ImA.jpg作为输入对象
-bin_object = rgb2gray(object); % 将输入对象转换为灰度图像
-xaxis = ((-len/2):(len/2-1))*dx; % 定义图像的x轴坐标（单位为米）
-yaxis = -xaxis; % 定义图像的y轴坐标（单位为米）
+object = imread('ImB.jpg'); % Read image file ImA.jpg as input object
+bin_object = rgb2gray(object); % Convert input object to grayscale image
+xaxis = ((-len/2):(len/2-1))*dx; % Define x-axis coordinates of image (in meters)
+yaxis = -xaxis; % Define y-axis coordinates of image (in meters)
 
-%% 创建滤波器
-fxaxis = ((-len/2):(len/2-1))*df; % 空间频率域的x轴坐标（单位为1/m）
-fyaxis = -fxaxis; % 空间频率域的y轴坐标（单位为1/m）
-[FX,FY] = meshgrid(fxaxis,fyaxis);  % 生成二维网格，表示每个点的fx和fy位置
-freq_rad = sqrt(FX.^2 + FY.^2); % 计算每个点的频率半径
-maxfreq = (len/2-1)*df; % 最大频率值
+%% Create filters
+fxaxis = ((-len/2):(len/2-1))*df; % x-axis coordinates in spatial frequency domain (in 1/m)
+fyaxis = -fxaxis; % y-axis coordinates in spatial frequency domain (in 1/m)
+[FX,FY] = meshgrid(fxaxis,fyaxis);  % Generate 2D grid representing fx and fy positions for each point
+freq_rad = sqrt(FX.^2 + FY.^2); % Calculate frequency radius for each point
+maxfreq = (len/2-1)*df; % Maximum frequency value
 
-cutoff_freq1 = 0.1*maxfreq; % 第一个截止频率（10%的最大频率）
-filter1 = double(freq_rad <= cutoff_freq1); % 创建针孔滤波器（频率半径小于截止频率的区域为1，其余为0）
+cutoff_freq1 = 0.1*maxfreq; % First cutoff frequency (10% of maximum frequency)
+filter1 = double(freq_rad <= cutoff_freq1); % Create pinhole filter (1 for regions with frequency radius less than cutoff frequency, 0 otherwise)
 
-cutoff_freq2 = 0.12*maxfreq; % 第二个截止频率（12%的最大频率）
-filter2 = double(freq_rad >= cutoff_freq2); % 创建高频滤波器（频率半径大于截止频率的区域为1，其余为0）
+cutoff_freq2 = 0.12*maxfreq; % Second cutoff frequency (12% of maximum frequency)
+filter2 = double(freq_rad >= cutoff_freq2); % Create high-frequency filter (1 for regions with frequency radius greater than cutoff frequency, 0 otherwise)
 
-cutoff_freq3 = 0.2*maxfreq; % 第三个截止频率（20%的最大频率）
-filter3 = double(freq_rad <= cutoff_freq3); % 创建低频滤波器（频率半径小于截止频率的区域为1，其余为0）
+cutoff_freq3 = 0.2*maxfreq; % Third cutoff frequency (20% of maximum frequency)
+filter3 = double(freq_rad <= cutoff_freq3); % Create low-frequency filter (1 for regions with frequency radius less than cutoff frequency, 0 otherwise)
 
-filter4 = filter2.*filter3; % 创建第3个菲涅尔区滤波器（结合高频和低频滤波器）
+filter4 = filter2.*filter3; % Create 3rd Fresnel zone filter (combining high and low frequency filters)
 
-%% 创建水平单缝光阑
-h_single_slit = zeros(len,len); % 初始化水平单缝光阑为全零矩阵
-h_halfwidth   = 80;   % 单缝的半宽度（像素）
-h_halfheight  = 12;    % 单缝的半高度（像素）
+%% Create horizontal single slit aperture
+h_single_slit = zeros(len,len); % Initialize horizontal single slit aperture as zero matrix
+h_halfwidth   = 80;   % Half-width of single slit (pixels)
+h_halfheight  = 12;    % Half-height of single slit (pixels)
 h_single_slit((cen-h_halfheight):(cen+h_halfheight),(cen-h_halfwidth):(cen+h_halfwidth)) = ...
-                                          ones(2*h_halfheight+1,2*h_halfwidth+1); % 在中心位置创建水平单缝                 
+                                          ones(2*h_halfheight+1,2*h_halfwidth+1); % Create horizontal single slit at center position                 
 
-%% 创建垂直单缝光阑
-v_single_slit = zeros(len,len); % 初始化垂直单缝光阑为全零矩阵
-v_halfwidth   = 12;   % 单缝的半宽度（像素）
-v_halfheight  = 80;    % 单缝的半高度（像素）
+%% Create vertical single slit aperture
+v_single_slit = zeros(len,len); % Initialize vertical single slit aperture as zero matrix
+v_halfwidth   = 12;   % Half-width of single slit (pixels)
+v_halfheight  = 80;    % Half-height of single slit (pixels)
 v_single_slit((cen-v_halfheight):(cen+v_halfheight),(cen-v_halfwidth):(cen+v_halfwidth)) = ...
-                                          ones(2*v_halfheight+1,2*v_halfwidth+1); % 在中心位置创建垂直单缝
+                                          ones(2*v_halfheight+1,2*v_halfwidth+1); % Create vertical single slit at center position
                                       
-%% 创建垂直双缝光阑
-v_double_slit = zeros(len,len); % 初始化垂直双缝光阑为全零矩阵
-v_halfwidth   = 12;   % 单缝的半宽度（像素）
-v_halfheight  = 80;    % 单缝的半高度（像素）
-v_spacing     = 60;   % 双缝的间距（像素）
+%% Create vertical double slit aperture
+v_double_slit = zeros(len,len); % Initialize vertical double slit aperture as zero matrix
+v_halfwidth   = 12;   % Half-width of single slit (pixels)
+v_halfheight  = 80;    % Half-height of single slit (pixels)
+v_spacing     = 60;   % Spacing between double slits (pixels)
 v_double_slit((cen-v_halfheight):(cen+v_halfheight),...
     ((cen-v_spacing/2)-v_halfwidth):((cen-v_spacing/2)+v_halfwidth)) = ...
-                                          ones(2*v_halfheight+1,2*v_halfwidth+1); % 创建第一个垂直缝
+                                          ones(2*v_halfheight+1,2*v_halfwidth+1); % Create first vertical slit
 v_double_slit((cen-v_halfheight):(cen+v_halfheight),...
     ((cen+v_spacing/2)-v_halfwidth):((cen+v_spacing/2)+v_halfwidth)) = ...
-                                          ones(2*v_halfheight+1,2*v_halfwidth+1); % 创建第二个垂直缝
+                                          ones(2*v_halfheight+1,2*v_halfwidth+1); % Create second vertical slit
 
-%% 创建水平双缝光阑
-h_double_slit = zeros(len,len); % 初始化水平双缝光阑为全零矩阵
-h_halfwidth   = 80;   % 单缝的半宽度（像素）
-h_halfheight  = 12;    % 单缝的半高度（像素）
-h_spacing     = 60;   % 双缝的间距（像素）
+%% Create horizontal double slit aperture
+h_double_slit = zeros(len,len); % Initialize horizontal double slit aperture as zero matrix
+h_halfwidth   = 80;   % Half-width of single slit (pixels)
+h_halfheight  = 12;    % Half-height of single slit (pixels)
+h_spacing     = 60;   % Spacing between double slits (pixels)
 h_double_slit(((cen-h_spacing/2)-h_halfheight):((cen-h_spacing/2)+h_halfheight),...
     (cen-h_halfwidth):(cen+h_halfwidth)) = ...
-                                          ones(2*h_halfheight+1,2*h_halfwidth+1); % 创建第一个水平缝
+                                          ones(2*h_halfheight+1,2*h_halfwidth+1); % Create first horizontal slit
 h_double_slit(((cen+h_spacing/2)-h_halfheight):((cen+h_spacing/2)+h_halfheight),...
     (cen-h_halfwidth):(cen+h_halfwidth)) = ...
-                                          ones(2*h_halfheight+1,2*h_halfwidth+1); % 创建第二个水平缝
+                                          ones(2*h_halfheight+1,2*h_halfwidth+1); % Create second horizontal slit
 
-%% 对输入对象进行傅里叶变换
-ftobj           = fftshift(fft2(fftshift(object(:,:,3)))); % 对输入对象的蓝色通道进行傅里叶变换并中心化
-ft_single_slit  = fftshift(fft2(fftshift(h_single_slit))); % 对水平单缝光阑进行傅里叶变换并中心化
-ft_double_slit  = fftshift(fft2(fftshift(h_double_slit))); % 对水平双缝光阑进行傅里叶变换并中心化
+%% Perform Fourier transform on input object
+ftobj           = fftshift(fft2(fftshift(object(:,:,3)))); % Perform Fourier transform on blue channel of input object and center it
+ft_single_slit  = fftshift(fft2(fftshift(h_single_slit))); % Perform Fourier transform on horizontal single slit aperture and center it
+ft_double_slit  = fftshift(fft2(fftshift(h_double_slit))); % Perform Fourier transform on horizontal double slit aperture and center it
 
-%% 滤波器实现
-ftimg1 = ftobj.*filter1; % 将针孔滤波器应用于输入对象的傅里叶变换结果
-ftimg2 = ftobj.*filter2; % 将高频滤波器应用于输入对象的傅里叶变换结果
-ftimg4 = ftobj.*filter4; % 将第3个菲涅尔区滤波器应用于输入对象的傅里叶变换结果
+%% Implement filters
+ftimg1 = ftobj.*filter1; % Apply pinhole filter to Fourier transform result of input object
+ftimg2 = ftobj.*filter2; % Apply high-frequency filter to Fourier transform result of input object
+ftimg4 = ftobj.*filter4; % Apply 3rd Fresnel zone filter to Fourier transform result of input object
 
-ftimg_h_single_slit = ftobj.*h_single_slit; % 将水平单缝光阑应用于输入对象的傅里叶变换结果
-ftimg_h_double_slit = ftobj.*h_double_slit; % 将水平双缝光阑应用于输入对象的傅里叶变换结果
+ftimg_h_single_slit = ftobj.*h_single_slit; % Apply horizontal single slit aperture to Fourier transform result of input object
+ftimg_h_double_slit = ftobj.*h_double_slit; % Apply horizontal double slit aperture to Fourier transform result of input object
 
-ftimg_v_single_slit = ftobj.*v_single_slit; % 将垂直单缝光阑应用于输入对象的傅里叶变换结果
-ftimg_v_double_slit = ftobj.*v_double_slit; % 将垂直双缝光阑应用于输入对象的傅里叶变换结果
+ftimg_v_single_slit = ftobj.*v_single_slit; % Apply vertical single slit aperture to Fourier transform result of input object
+ftimg_v_double_slit = ftobj.*v_double_slit; % Apply vertical double slit aperture to Fourier transform result of input object
 %==========================================================
-%% 计算滤波后的逆傅里叶变换
-img1 = abs(fftshift(ifft2(fftshift(ftimg1)))); % 计算针孔滤波后的逆傅里叶变换并取绝对值
-img4 = abs(fftshift(ifft2(fftshift(ftimg4)))); % 计算第3个菲涅尔区滤波后的逆傅里叶变换并取绝对值
+%% Calculate inverse Fourier transform after filtering
+img1 = abs(fftshift(ifft2(fftshift(ftimg1)))); % Calculate inverse Fourier transform after pinhole filtering and take absolute value
+img4 = abs(fftshift(ifft2(fftshift(ftimg4)))); % Calculate inverse Fourier transform after 3rd Fresnel zone filtering and take absolute value
 
-img1_h_single_slit = abs(fftshift(ifft2(fftshift(ftimg_h_single_slit)))); % 计算水平单缝光阑后的逆傅里叶变换并取绝对值
-img2_h_double_slit = abs(fftshift(ifft2(fftshift(ftimg_h_double_slit)))); % 计算水平双缝光阑后的逆傅里叶变换并取绝对值
+img1_h_single_slit = abs(fftshift(ifft2(fftshift(ftimg_h_single_slit)))); % Calculate inverse Fourier transform after horizontal single slit aperture and take absolute value
+img2_h_double_slit = abs(fftshift(ifft2(fftshift(ftimg_h_double_slit)))); % Calculate inverse Fourier transform after horizontal double slit aperture and take absolute value
 
-img3_v_single_slit = abs(fftshift(ifft2(fftshift(ftimg_v_single_slit)))); % 计算垂直单缝光阑后的逆傅里叶变换并取绝对值
-img4_v_double_slit = abs(fftshift(ifft2(fftshift(ftimg_v_double_slit)))); % 计算垂直双缝光阑后的逆傅里叶变换并取绝对值
+img3_v_single_slit = abs(fftshift(ifft2(fftshift(ftimg_v_single_slit)))); % Calculate inverse Fourier transform after vertical single slit aperture and take absolute value
+img4_v_double_slit = abs(fftshift(ifft2(fftshift(ftimg_v_double_slit)))); % Calculate inverse Fourier transform after vertical double slit aperture and take absolute value
 
 
-%% 绘制针孔和第3个菲涅尔区的结果
-figure('NumberTitle', 'off', 'Name', 'Pinhole and 3rd Fresnel zone'); % 创建一个新的图形窗口
-set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % 设置图形窗口的大小
-colormap('parula'); % 设置颜色映射
+%% Plot results for pinhole and 3rd Fresnel zone
+figure('NumberTitle', 'off', 'Name', 'Pinhole and 3rd Fresnel zone'); % Create new figure window
+set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % Set figure window size
+colormap('parula'); % Set color map
 
-subplot(2,4,1); % 创建子图
-imagesc(xaxis,yaxis,filter1);axis('image'); % 显示针孔滤波器
-xlabel('x, m');ylabel('y, m'); % 设置坐标轴标签
-title('Pinhole'); % 设置标题
+subplot(2,4,1); % Create subplot
+imagesc(xaxis,yaxis,filter1);axis('image'); % Display pinhole filter
+xlabel('x, m');ylabel('y, m'); % Set axis labels
+title('Pinhole'); % Set title
 
-subplot(2,4,2); % 创建子图
-imagesc(fxaxis,fyaxis,img1);axis('image'); % 显示针孔滤波后的图像
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % 设置坐标轴标签
-colorbar('EastOutside'); % 添加颜色条
-title('Pinhole - Image plane'); % 设置标题
+subplot(2,4,2); % Create subplot
+imagesc(fxaxis,fyaxis,img1);axis('image'); % Display image after pinhole filtering
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+colorbar('EastOutside'); % Add color bar
+title('Pinhole - Image plane'); % Set title
 
-subplot(2,4,3); % 创建子图
-mesh(fxaxis,fyaxis,img1); % 绘制针孔滤波后的强度分布（三维网格图）
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % 设置坐标轴标签
-title('Intensity values'); % 设置标题
+subplot(2,4,3); % Create subplot
+mesh(fxaxis,fyaxis,img1); % Plot intensity distribution after pinhole filtering (3D mesh plot)
+xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+title('Intensity values'); % Set title
 
-subplot(2,4,4); % 创建子图
-plot(xaxis,bin_object(cen,:));hold on;grid on; % 绘制原始对象的中心切片
-plot(xaxis,img1(cen,:),'r'); % 绘制滤波后图像的中心切片
-legend('object','image');xlabel('x, m');ylabel('Intensity'); % 添加图例和坐标轴标签
-title('Slice through centers of object and image'); % 设置标题
+subplot(2,4,4); % Create subplot
+plot(xaxis,bin_object(cen,:));hold on;grid on; % Plot center slice of original object
+plot(xaxis,img1(cen,:),'r'); % Plot center slice of filtered image
+legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and axis labels
+title('Slice through centers of object and image'); % Set title
 
-subplot(2,4,5); % 创建子图
-imagesc(xaxis,yaxis,filter4);axis('image'); % 显示第3个菲涅尔区滤波器
-xlabel('x, m');ylabel('y, m'); % 设置坐标轴标签
-title('3rd Fresnel zone'); % 设置标题
+subplot(2,4,5); % Create subplot
+imagesc(xaxis,yaxis,filter4);axis('image'); % Display 3rd Fresnel zone filter
+xlabel('x, m');ylabel('y, m'); % Set axis labels
+title('3rd Fresnel zone'); % Set title
 
-subplot(2,4,6); % 创建子图
-imagesc(fxaxis,fyaxis,img4);axis('image'); % 显示第3个菲涅尔区滤波后的图像
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % 设置坐标轴标签
-colorbar('EastOutside'); % 添加颜色条
-title('3F zone - Image plane'); % 设置标题
+subplot(2,4,6); % Create subplot
+imagesc(fxaxis,fyaxis,img4);axis('image'); % Display image after 3rd Fresnel zone filtering
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+colorbar('EastOutside'); % Add color bar
+title('3F zone - Image plane'); % Set title
 
-subplot(2,4,7); % 创建子图
-mesh(fxaxis,fyaxis,img4); % 绘制第3个菲涅尔区滤波后的强度分布（三维网格图）
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % 设置坐标轴标签
-title('Intensity values'); % 设置标题
+subplot(2,4,7); % Create subplot
+mesh(fxaxis,fyaxis,img4); % Plot intensity distribution after 3rd Fresnel zone filtering (3D mesh plot)
+xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+title('Intensity values'); % Set title
 
-subplot(2,4,8); % 创建子图
-plot(xaxis,bin_object(cen,:));hold on;grid on; % 绘制原始对象的中心切片
-plot(xaxis,img4(cen,:),'r'); % 绘制滤波后图像的中心切片
-legend('object','image');xlabel('x, m');ylabel('Intensity'); % 添加图例和坐标轴标签
-title('Slice through centers of object and image'); % 设置标题
+subplot(2,4,8); % Create subplot
+plot(xaxis,bin_object(cen,:));hold on;grid on; % Plot center slice of original object
+plot(xaxis,img4(cen,:),'r'); % Plot center slice of filtered image
+legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and axis labels
+title('Slice through centers of object and image'); % Set title
 
-%% 绘制水平单缝和双缝的结果
-figure('NumberTitle', 'off', 'Name', 'Horizontal Single and Double slits'); % 创建一个新的图形窗口
-set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % 设置图形窗口的大小
-colormap('parula'); % 设置颜色映射
+%% Plot results for horizontal single and double slits
+figure('NumberTitle', 'off', 'Name', 'Horizontal Single and Double slits'); % Create new figure window
+set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % Set figure window size
+colormap('parula'); % Set color map
 
-subplot(2,4,1); % 创建子图
-imagesc(xaxis,yaxis,h_single_slit);axis('image'); % 显示水平单缝光阑
-xlabel('x, m');ylabel('y, m'); % 设置坐标轴标签
-title('h_single_slit'); % 设置标题
+subplot(2,4,1); % Create subplot
+imagesc(xaxis,yaxis,h_single_slit);axis('image'); % Display horizontal single slit aperture
+xlabel('x, m');ylabel('y, m'); % Set axis labels
+title('h_single_slit'); % Set title
 
-subplot(2,4,2); % 创建子图
-imagesc(fxaxis,fyaxis,img1_h_single_slit);axis('image'); % 显示水平单缝光阑后的图像
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % 设置坐标轴标签
-colorbar('EastOutside'); % 添加颜色条
-title('img1_single_lit'); % 设置标题
+subplot(2,4,2); % Create subplot
+imagesc(fxaxis,fyaxis,img1_h_single_slit);axis('image'); % Display image after horizontal single slit aperture
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+colorbar('EastOutside'); % Add color bar
+title('img1_single_lit'); % Set title
 
-subplot(2,4,3); % 创建子图
-mesh(fxaxis,fyaxis,img1_h_single_slit); % 绘制水平单缝光阑后的强度分布（三维网格图）
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % 设置坐标轴标签
-title('Intensity values'); % 设置标题
+subplot(2,4,3); % Create subplot
+mesh(fxaxis,fyaxis,img1_h_single_slit); % Plot intensity distribution after horizontal single slit aperture (3D mesh plot)
+xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+title('Intensity values'); % Set title
 
-subplot(2,4,4); % 创建子图
-plot(xaxis,bin_object(cen,:));hold on;grid on; % 绘制原始对象的中心切片
-plot(xaxis,img1_h_single_slit(cen,:),'r'); % 绘制水平单缝光阑后图像的中心切片
-legend('object','image');xlabel('x, m');ylabel('Intensity'); % 添加图例和坐标轴标签
-title('Slice through centers of object and image'); % 设置标题
+subplot(2,4,4); % Create subplot
+plot(xaxis,bin_object(cen,:));hold on;grid on; % Plot center slice of original object
+plot(xaxis,img1_h_single_slit(cen,:),'r'); % Plot center slice of image after horizontal single slit aperture
+legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and axis labels
+title('Slice through centers of object and image'); % Set title
 
-subplot(2,4,5); % 创建子图
-imagesc(xaxis,yaxis,h_double_slit);axis('image'); % 显示水平双缝光阑
-xlabel('x, m');ylabel('y, m'); % 设置坐标轴标签
-title('h_double_slit'); % 设置标题
+subplot(2,4,5); % Create subplot
+imagesc(xaxis,yaxis,h_double_slit);axis('image'); % Display horizontal double slit aperture
+xlabel('x, m');ylabel('y, m'); % Set axis labels
+title('h_double_slit'); % Set title
 
-subplot(2,4,6); % 创建子图
-imagesc(fxaxis,fyaxis,img2_h_double_slit);axis('image'); % 显示水平双缝光阑后的图像
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % 设置坐标轴标签
-colorbar('EastOutside'); % 添加颜色条
-title('3F zone - Image plane'); % 设置标题
+subplot(2,4,6); % Create subplot
+imagesc(fxaxis,fyaxis,img2_h_double_slit);axis('image'); % Display image after horizontal double slit aperture
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+colorbar('EastOutside'); % Add color bar
+title('3F zone - Image plane'); % Set title
 
-subplot(2,4,7); % 创建子图
-mesh(fxaxis,fyaxis,img2_h_double_slit); % 绘制水平双缝光阑后的强度分布（三维网格图）
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % 设置坐标轴标签
-title('Intensity values'); % 设置标题
+subplot(2,4,7); % Create subplot
+mesh(fxaxis,fyaxis,img2_h_double_slit); % Plot intensity distribution after horizontal double slit aperture (3D mesh plot)
+xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+title('Intensity values'); % Set title
 
-subplot(2,4,8); % 创建子图
-plot(xaxis,bin_object(cen,:));hold on;grid on; % 绘制原始对象的中心切片
-plot(xaxis,img2_h_double_slit(cen,:),'r'); % 绘制水平双缝光阑后图像的中心切片
-legend('object','image');xlabel('x, m');ylabel('Intensity'); % 添加图例和坐标轴标签
-title('Slice through centers of object and image'); % 设置标题
+subplot(2,4,8); % Create subplot
+plot(xaxis,bin_object(cen,:));hold on;grid on; % Plot center slice of original object
+plot(xaxis,img2_h_double_slit(cen,:),'r'); % Plot center slice of image after horizontal double slit aperture
+legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and axis labels
+title('Slice through centers of object and image'); % Set title
 
-%% 绘制垂直单缝和双缝的结果
-figure('NumberTitle', 'off', 'Name', 'Vertical Single and Double slits'); % 创建一个新的图形窗口
-set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % 设置图形窗口的大小
-colormap('parula'); % 设置颜色映射
+%% Plot results for vertical single and double slits
+figure('NumberTitle', 'off', 'Name', 'Vertical Single and Double slits'); % Create new figure window
+set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % Set figure window size
+colormap('parula'); % Set color map
 
-subplot(2,4,1); % 创建子图
-imagesc(xaxis,yaxis,v_single_slit);axis('image'); % 显示垂直单缝光阑
-xlabel('x, m');ylabel('y, m'); % 设置坐标轴标签
-title('v single slit'); % 设置标题
+subplot(2,4,1); % Create subplot
+imagesc(xaxis,yaxis,v_single_slit);axis('image'); % Display vertical single slit aperture
+xlabel('x, m');ylabel('y, m'); % Set axis labels
+title('v single slit'); % Set title
 
-subplot(2,4,2); % 创建子图
-imagesc(fxaxis,fyaxis,img3_v_single_slit);axis('image'); % 显示垂直单缝光阑后的图像
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % 设置坐标轴标签
-colorbar('EastOutside'); % 添加颜色条
-title('img3 v single slit'); % 设置标题
+subplot(2,4,2); % Create subplot
+imagesc(fxaxis,fyaxis,img3_v_single_slit);axis('image'); % Display image after vertical single slit aperture
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+colorbar('EastOutside'); % Add color bar
+title('img3 v single slit'); % Set title
 
-subplot(2,4,3); % 创建子图
-mesh(fxaxis,fyaxis,img3_v_single_slit); % 绘制垂直单缝光阑后的强度分布（三维网格图）
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % 设置坐标轴标签
-title('Intensity values'); % 设置标题
+subplot(2,4,3); % Create subplot
+mesh(fxaxis,fyaxis,img3_v_single_slit); % Plot intensity distribution after vertical single slit aperture (3D mesh plot)
+xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+title('Intensity values'); % Set title
 
-subplot(2,4,4); % 创建子图
-plot(xaxis,bin_object(cen,:));hold on;grid on; % 绘制原始对象的中心切片
-plot(xaxis,img3_v_single_slit(cen,:),'r'); % 绘制垂直单缝光阑后图像的中心切片
-legend('object','image');xlabel('x, m');ylabel('Intensity'); % 添加图例和坐标轴标签
-title('Slice through centers of object and image'); % 设置标题
+subplot(2,4,4); % Create subplot
+plot(xaxis,bin_object(cen,:));hold on;grid on; % Plot center slice of original object
+plot(xaxis,img3_v_single_slit(cen,:),'r'); % Plot center slice of image after vertical single slit aperture
+legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and axis labels
+title('Slice through centers of object and image'); % Set title
 
-subplot(2,4,5); % 创建子图
-imagesc(xaxis,yaxis,v_double_slit);axis('image'); % 显示垂直双缝光阑
-xlabel('x, m');ylabel('y, m'); % 设置坐标轴标签
-title('v double slit'); % 设置标题
+subplot(2,4,5); % Create subplot
+imagesc(xaxis,yaxis,v_double_slit);axis('image'); % Display vertical double slit aperture
+xlabel('x, m');ylabel('y, m'); % Set axis labels
+title('v double slit'); % Set title
 
-subplot(2,4,6); % 创建子图
-imagesc(fxaxis,fyaxis,img4_v_double_slit);axis('image'); % 显示垂直双缝光阑后的图像
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % 设置坐标轴标签
-colorbar('EastOutside'); % 添加颜色条
-title('v double slit'); % 设置标题
+subplot(2,4,6); % Create subplot
+imagesc(fxaxis,fyaxis,img4_v_double_slit);axis('image'); % Display image after vertical double slit aperture
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+colorbar('EastOutside'); % Add color bar
+title('v double slit'); % Set title
 
-subplot(2,4,7); % 创建子图
-mesh(fxaxis,fyaxis,img4_v_double_slit); % 绘制垂直双缝光阑后的强度分布（三维网格图）
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % 设置坐标轴标签
-title('Intensity values'); % 设置标题
+subplot(2,4,7); % Create subplot
+mesh(fxaxis,fyaxis,img4_v_double_slit); % Plot intensity distribution after vertical double slit aperture (3D mesh plot)
+xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+title('Intensity values'); % Set title
 
-subplot(2,4,8); % 创建子图
-plot(xaxis,bin_object(cen,:));hold on;grid on; % 绘制原始对象的中心切片
-plot(xaxis,img4_v_double_slit(cen,:),'r'); % 绘制垂直双缝光阑后图像的中心切片
-legend('object','image');xlabel('x, m');ylabel('Intensity'); % 添加图例和坐标轴标签
-title('Slice through centers of object and image'); % 设置标题
-
+subplot(2,4,8); % Create subplot
+plot(xaxis,bin_object(cen,:));hold on;grid on; % Plot center slice of original object
+plot(xaxis,img4_v_double_slit(cen,:),'r'); % Plot center slice of image after vertical double slit aperture
+legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and axis labels
+title('Slice through centers of object and image'); % Set title
