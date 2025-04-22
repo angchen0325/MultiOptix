@@ -23,6 +23,6 @@ grid on;
 xlabel('Frequency (2\pic/a)');
 ylabel('Reflectance');
 
-% Calculate the elapsed time、
+% Calculate the elapsed time
 elapsedTime = toc(tStart);
 fprintf('Code running time: %.6f seconds\n', elapsedTime);
