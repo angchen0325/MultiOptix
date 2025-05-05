@@ -43,6 +43,7 @@ MultiOptix/
 ├── fdtd/              # FDTD integration layer or scripts (e.g., MEEP or Ansys Lumerical FDTD)
 ├── examples/          # Sample projects, Python files and Jupyter notebooks
 ├── docs/              # Documentation and usage guide
+├── tex/               # Tex files of notes
 └── README.md
 ```
 
