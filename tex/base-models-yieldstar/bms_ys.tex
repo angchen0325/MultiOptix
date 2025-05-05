@@ -1,0 +1,163 @@
+\documentclass[pra,superscriptaddress,reprint]{revtex4-1}
+
+\usepackage{amsmath,amssymb,graphicx,color,bm}
+\usepackage{soul} %\st \hl
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\large\bfseries\centering}{\thesection.}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\centering}{\thesection.\thesubsection}{1em}{}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}} 
+%\usepackage[colorlinks, linkcolor=blue, citecolor=black, urlcolor=blue]{hyperref}
+
+
+\begin{document}
+
+\title{\Large Base models in YieldStar optics}
+
+\author{Ang Chen}
+\thanks{chenang@outlook.com}
+
+
+\begin{abstract}
+In this note,
+\end{abstract}
+
+\maketitle
+
+\section{Introduction~\label{sec:1}}
+\subsection{Test}
+
+
+% \begin{widetext}
+% \begin{eqnarray}
+% \label{eq:27}
+% \cos(q_{1,2} a)
+% & = &
+% \cos x_1 \cos x_2 - \frac{c_{+}}{2} \left( \frac{Y_1}{Y_2} + \frac{Y_2}{Y_1} - \frac{\Delta_{21}\Delta_{12}}{Y_1Y_2} \right) \sin x_1 \sin x_2 \nonumber \\
+% & \quad & \pm \sqrt{\bar{\Delta}^2 \left( \frac{\sin^2 x_1 \cos^2 x_2}{Y_1^2} + \frac{\sin^2 x_2 \cos^2 x_1}{Y_2^2} + \frac{c_+ \sin 2 x_1 \sin 2 x_2}{2 Y_1 Y_2} \right) + \frac{c_-^2 Y_+^2 Y_-^2}{4 Y_1^2 Y_2^2} \sin^2 x_1 \sin^2 x_2},
+% \end{eqnarray}
+% \end{widetext}
+
+
+
+% \begin{figure}[b]
+% \centering
+% % Requires \usepackage{graphicx}
+% \includegraphics[scale=1]{figure3}\\
+% \caption{SHEL at an interface (e.g. air-TI) with $\varepsilon_1 = 1, \mu_1=1, \varepsilon_2 = 16, \mu_2 = 1$. (a) Illustration of a wave packet out of a generic polarizer. Two orthogonal polarizations $|H\rangle$ and $|V\rangle$ are shown. (b) Theoretical displacements of the spin components for horizontally and vertically polarized incident photons. $\delta^{\mathrm{H}_c}$ and $\delta^{\mathrm{V}_c}$ indicate the displacements of the spin components induced by the TME effect for corresponding polarizations. The upper panel plots the displacements for $|+\rangle$-component and the lower panel for the $|-\rangle$-component. (c) Position displacements for the right- and left-circularly polarized wave packets, corresponding to $m = + i$ and $m = -i$, respectively.  \label{fig:3}}
+% \end{figure}
+
+\appendix
+
+% \section{ THE PHOTONIC BAND STRUCTURES OF THE 1D TI PHCS~\label{sec:a1}}
+% With Eqs. \eqref{eq:6}, \eqref{eq:7} and \eqref{eq:24}, we can obtain the elements of $\mathcal{M}$ for the 1D TI PhC as follows,
+% \begin{subequations}
+% \label{eq:a1}
+% \begin{align}
+% M_{11}
+% & = e^{- i x_1} \cos x_2 - \frac{i}{2} \frac{c_1 Y_1}{c_2 Y_2} e^{- i x_1} \sin x_2 \nonumber \\
+% & - \frac{i}{2} \frac{c_2}{c_1} \left( \frac{Y_2}{Y_1} - \frac{\Delta_{21} \Delta_{12}}{Y_1Y_2} \right) e^{- i x_1} \sin x_2, \\
+% M_{12}
+% & = - \frac{\bar{\Delta}}{Y_1} e^{- i x_1} \cos x_2 \nonumber \\
+% & + \frac{i}{2 Y_2} \left( \frac{c_2 \Delta_{21}}{c_1} + \frac{c_1 \Delta_{12}}{c_2} \right) e^{- i x_1} \sin x_2, \\
+% M_{13}
+% & = \frac{i}{2}\left[\frac{c_1Y_1}{c_2Y_2}-\frac{c_2}{c_1}\left(\frac{Y_2}{Y_1}-\frac{\Delta_{21}\Delta_{12}}{Y_1Y_2} \right)\right]\sin x_2e^{ix_1}, \\
+% M_{14}
+% & = \frac{\bar{\Delta}}{Y_1} e^{i x_1} \cos x_2 \nonumber \\
+% & + \frac{i}{2 Y_2} \left( \frac{c_2 \Delta_{21}}{c_1} - \frac{c_1 \Delta_{12}}{c_2} \right) e^{i x_1} \sin x_2, \\
+% M_{21}
+% & = \frac{\bar{\Delta}}{Y_1} e^{- i x_1} \cos x_2 \nonumber \\
+% & - \frac{i}{2 Y_2} \left( \frac{c_2 \Delta_{21}}{c_1} + \frac{c_1 \Delta_{12}}{c_2} \right) e^{- i x_1} \sin x_2, \\
+% M_{22}
+% & = e^{- i x_1} \cos x_2 - \frac{i}{2} \frac{c_2 Y_1}{c_1 Y_2} e^{- i x_1} \sin x_2 \nonumber \\
+% & - \frac{i}{2} \frac{c_1}{c_2} \left( \frac{Y_2}{Y_1} - \frac{\Delta_{21} \Delta_{12}}{Y_1Y_2} \right) e^{- i x_1} \sin x_2, \\
+% M_{23}
+% & = \frac{\bar{\Delta}}{Y_1} e^{i x_1} \cos x_2 \nonumber \\
+% & + \frac{i}{2 Y_2} \left( \frac{c_1 \Delta_{21}}{c_2} - \frac{c_2 \Delta_{12}}{c_1} \right) e^{i x_1} \sin x_2, \\
+% M_{24}
+% & = -\frac{i}{2}\left[\frac{c_2Y_1}{c_1Y_2}-\frac{c_1}{c_2}\left(\frac{Y_2}{Y_1}-\frac{\Delta_{21}\Delta_{12}}{Y_1Y_2} \right)\right]\sin x_2e^{ix_1}.
+% \end{align}
+% \end{subequations}
+% The other 8 elements of $\mathcal{M}$ can be obtained from the complex conjugate of the elements in Eqs. \eqref{eq:a1}, as written in Eq. \eqref{eq:25}. The trace of $\mathcal{M}$ is
+% \begin{eqnarray}
+% \label{eq:a2}
+% % \nonumber % Remove numbering (before each equation)
+% \mathrm{Tr} (\mathcal{M})
+% &=& M_{11} + M_{22} + M_{11}^\ast + M_{22}^\ast \nonumber \\
+% &=& 2 [\Re(M_{11}) + \Re(M_{22})].
+% \end{eqnarray}
+
+% On the other hand, Bloch theorem reads
+% \begin{equation}
+% \label{eq:a3}
+% \tilde{E}_j (z)
+% =
+% \mathcal{M} \tilde{E}_j (z+a)
+% =
+% e^{-i K a} \tilde{E}_j (z+a),
+% \end{equation}
+% where $K$ is the Bloch wave vector. We have 4 Bolch wave vectors $K_1,K_2,K_3,K_4$, corresponding to 4 eigenvalues $e^{- i K_1 a},e^{- i K_2 a},e^{- i K_3 a},e^{- i K_4 a}$ of $\mathcal{M}$, leading to
+% \begin{equation}
+% \label{eq:a4}
+% \mathrm{Tr} (\mathcal{M})
+% =
+% \sum_{p = 1}^4 e^{-iK_pa}
+% =
+% \sum_{p = 1}^4 \cos K_p a - i \sum_{p = 1}^4 \sin K_p a.
+% \end{equation}
+% Eqs. \eqref{eq:a2} and \eqref{eq:a4} give
+% \begin{equation}
+% \label{eq:a5}
+% \sin K_1 a + \sin K_2 a + \sin K_3 a + \sin K_4 a = 0.
+% \end{equation}
+% Since $- \pi / a \leq K \leq \pi / a$, thus we have only 2 independent Bloch wave vectors: Via setting $K_1 = - K_2 = q_1, ~ K_3 = - K_4 = q_2$, and $0 \leq q_1 \leq q_2 \leq \pi / a$, we can reach
+% \begin{eqnarray}
+% \cos q_{1,2} a
+% &=&
+% \frac{1}{4} ( 2 \cos q_1 a + 2 \cos q_2 a ) \nonumber \\
+% & &
+% \pm  \frac{1}{4}| 2 \cos q_1 a - 2 \cos q_2 a|.
+% \end{eqnarray}
+% By some algebra, we have
+% \begin{eqnarray*}
+% & & 2 \cos q_1 a + 2 \cos q_2 a \\
+% &=&
+% e^{- i q_1 a} + e^{i q_1 a} + e^{- i q_2 a} + e^{i q_2 a} = \mathrm{Tr} (\mathcal{M}), \\
+% & & |2 \cos q_1 a - 2 \cos q_2 a| \\
+% &=& \sqrt{4 (\cos q_1 a - \cos q_2 a)^2} \\
+% &=& \sqrt{4 (\cos 2 q_1 a + \cos 2 q_2 a) - 4 ( \cos q_1 a + \cos q_2 a)^2 + 8} \\
+% &=& \sqrt{2 \mathrm{Tr} (\mathcal{M}^2) - \mathrm{Tr}^2 (\mathcal{M}) + 8}.
+% \end{eqnarray*}
+
+
+\begin{thebibliography}{99}
+
+\bibitem{adel2008diffraction}
+Mike Adel, Daniel Kandel, Vladimir Levinski, Joel Seligson and Alex Kuniavsky.
+\textit{Diffraction order control in overlay metrology -- a review of the roadmap options}.
+Metrology, Inspection, and Process Control for Microlithography XXIX, Proceedings Vol. \textbf{6922}: 692202, 2008.
+
+\bibitem{blancquaert2013diffraction}
+Yoann Blancquaert and Christophe Dezauzier.
+\textit{Diffraction based overlay and image based overlay on production flow for advanced technology node}.
+Metrology, Inspection, and Process Control for Microlithography XXVII, Proceedings Vol. \textbf{8681}: 86812O, 2013.
+
+
+%\bibitem{merton1972an}
+%Robert C. Merton.
+%\textit{An analytic derivation of the efficient portfolio frontier}.
+%The Journal of Financial and Quantitative Analysis \textbf{7}:1851-1872, 1972.
+
+
+% \bibitem{descartes1637discours}
+% Ren\'{e} Descartes.
+% \textit{Discours de la M\'{e}thode}, 1637.
+
+
+% \bibitem{random-forest-classifier}
+% Random Forest Classifier. \\
+% \url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}.
+
+\end{thebibliography}
+
+\end{document} 
