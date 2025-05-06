@@ -4,10 +4,12 @@
 \usepackage{soul} %\st \hl
 \usepackage{titlesec}
 \titleformat{\section}{\normalfont\large\bfseries\centering}{\thesection.}{1em}{}
-\titleformat{\subsection}{\normalfont\normalsize\bfseries\centering}{\thesection.\thesubsection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\centering}{\thesection.\thesubsection.}{1em}{}
 \renewcommand{\thesection}{\Roman{section}}
 \renewcommand{\thesubsection}{\arabic{subsection}} 
-%\usepackage[colorlinks, linkcolor=blue, citecolor=black, urlcolor=blue]{hyperref}
+
+\definecolor{myblue}{rgb}{0.18,0.19,0.57}
+\usepackage[colorlinks, linkcolor=magenta, citecolor=myblue, urlcolor=magenta]{hyperref}
 
 
 \begin{document}
@@ -20,10 +22,13 @@
 
 
 \begin{abstract}
-In this note,
+In this note, we review the thesis~\cite{swinkels2021spectral}, which systematically introduces the theories and methods
+of diffraction-based overlay (DBO) used in semiconductor manufacturing.
 \end{abstract}
 
 \maketitle
+
+% \tableofcontents
 
 \section{Introduction~\label{sec:1}}
 \subsection{Test}
@@ -49,6 +54,38 @@ In this note,
 % \end{figure}
 
 \appendix
+
+\section{Fourier transformation of an image~\label{sec-a:ft-an0image}}
+When computing the two-dimensional (2D) Fourier transform (FT) of an image, the output represents the frequency
+components of the  in the spatial frequency domain.
+Now let's determine the frequency range associated with the Fourier transform, based on the dimension of the image
+with both pixel pixels ($N_x~\text{pixels}\times N_y~\text{pixels}$) 
+and actual physical sizes ($L_x~\text{nm}\times L_y~\text{nm}$).
+Here, the unit can be any length unit, and we just make nm as an example: 
+If using nm, the unit of spatial frequency domain would be nm$^{-1}$.
+
+The pixel spacing in each dimension given by the ratio of the physical size to the numbers of pixels:
+\begin{equation}
+\Delta_x = \frac{L_x}{N_x},~\Delta_y = \frac{L_y}{N_y}.
+\end{equation}
+When  an image is applied with FT, its spatial frequency range is determined by the \textit{Nyquist sampling theorem},
+which states that the sampling frequency should be no less than the maximum frequency times by 2, leading to
+\begin{subequations}
+\begin{align}
+f_{x,\text{max}} &= \frac{f_{x,\text{samp}}}{2} = \frac{1}{2\Delta_x} = \frac{N_x}{2L_x}, \\
+f_{y,\text{max}} &= \frac{f_{y,\text{samp}}}{2} = \frac{1}{2\Delta_y} = \frac{N_y}{2L_y}.
+\end{align}
+\end{subequations}
+The frequency bins (in cycles per nanometer) in $x$ and $y$ directions are spaced by:
+\begin{equation}
+\Delta f_x = \frac{1}{L_x},~\Delta f_y = \frac{1}{L_y},
+\end{equation}
+and thus the frequency components in the Fourier transform will range from 
+$[-\frac{N_x}{2L_x}, \frac{N_x}{2L_x}]$ and $[-\frac{N_y}{2L_y}, \frac{N_y}{2L_y}]$.
+
+We give an example with FFT in MATLAB, as shown in Fig.
+
+
 
 % \section{ THE PHOTONIC BAND STRUCTURES OF THE 1D TI PHCS~\label{sec:a1}}
 % With Eqs. \eqref{eq:6}, \eqref{eq:7} and \eqref{eq:24}, we can obtain the elements of $\mathcal{M}$ for the 1D TI PhC as follows,
@@ -133,15 +170,15 @@ In this note,
 
 \begin{thebibliography}{99}
 
-\bibitem{adel2008diffraction}
-Mike Adel, Daniel Kandel, Vladimir Levinski, Joel Seligson and Alex Kuniavsky.
-\textit{Diffraction order control in overlay metrology -- a review of the roadmap options}.
-Metrology, Inspection, and Process Control for Microlithography XXIX, Proceedings Vol. \textbf{6922}: 692202, 2008.
+\bibitem{swinkels2021spectral}
+Daan Swinkels.
+\textit{Spectral shaping for the next-generation overlay metrology}.
+Student thesis: Master, 2021.
 
-\bibitem{blancquaert2013diffraction}
-Yoann Blancquaert and Christophe Dezauzier.
-\textit{Diffraction based overlay and image based overlay on production flow for advanced technology node}.
-Metrology, Inspection, and Process Control for Microlithography XXVII, Proceedings Vol. \textbf{8681}: 86812O, 2013.
+% \bibitem{blancquaert2013diffraction}
+% Yoann Blancquaert and Christophe Dezauzier.
+% \textit{Diffraction based overlay and image based overlay on production flow for advanced technology node}.
+% Metrology, Inspection, and Process Control for Microlithography XXVII, Proceedings Vol. \textbf{8681}: 86812O, 2013.
 
 
 %\bibitem{merton1972an}
