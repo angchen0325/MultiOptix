@@ -43,28 +43,32 @@ img_filtered = real(ifft2(ifftshift(F_filtered)));
 % Display results
 figure(1);
 subplot(1,2,1);
-imshow(magnitude_spectrum, []);
+imagesc(magnitude_spectrum);
 colormap('parula');
 colorbar;
+axis('image');
 title('Original Fourier Transform');
 
 subplot(1,2,2);
-imshow(img);
+imagesc(img);
 colormap('parula');
 colorbar;
+axis('image');
 title('Original Image');
 
 figure(2);
 subplot(1,2,1);
-imshow(magnitude_spectrum_filtered, []);
+imagesc(magnitude_spectrum_filtered);
 colormap('parula');
 colorbar;
+axis('image');
 title('Filtered Fourier Transform (1&2&3 blocked)');
 
 subplot(1,2,2);
-imshow(img_filtered);
+imagesc(img_filtered);
 colormap('parula');
 colorbar;
+axis('image');
 title('Filtered Image');
 
 % Save the results
