@@ -12,7 +12,7 @@ cen = len/2 + 1; % Center position of pixel array (pixel coordinates)
 dx = 5.0e-6;    % Pixel spacing in meters (m)  
 df = 1/(len*dx);   % Spatial frequency domain sampling interval in 1/m (cycles/meter)
 %% Create input object
-object = imread('ImB.jpg'); % Read image file ImA.jpg as input object
+object = imread('ImA.jpg'); % Read image file ImA.jpg as input object
 bin_object = rgb2gray(object); % Convert input object to grayscale image
 xaxis = ((-len/2):(len/2-1))*dx; % Define x-axis coordinates of image (in meters)
 yaxis = -xaxis; % Define y-axis coordinates of image (in meters)
@@ -27,10 +27,10 @@ maxfreq = (len/2-1)*df; % Maximum frequency value
 cutoff_freq1 = 0.1*maxfreq; % First cutoff frequency (10% of maximum frequency)
 filter1 = double(freq_rad <= cutoff_freq1); % Create pinhole filter (1 for regions with frequency radius less than cutoff frequency, 0 otherwise)
 
-cutoff_freq2 = 0.5*maxfreq; % Second cutoff frequency (12% of maximum frequency)
+cutoff_freq2 = 0.3*maxfreq; % Second cutoff frequency (12% of maximum frequency)
 filter2 = double(freq_rad >= cutoff_freq2); % Create high-frequency filter (1 for regions with frequency radius greater than cutoff frequency, 0 otherwise)
 
-cutoff_freq3 = 0.7*maxfreq; % Third cutoff frequency (20% of maximum frequency)
+cutoff_freq3 = 0.4*maxfreq; % Third cutoff frequency (20% of maximum frequency)
 filter3 = double(freq_rad <= cutoff_freq3); % Create low-frequency filter (1 for regions with frequency radius less than cutoff frequency, 0 otherwise)
 
 filter4 = filter2.*filter3; % Create 3rd Fresnel zone filter (combining high and low frequency filters)
@@ -54,19 +54,19 @@ set(gcf, 'Units','Normalized','OuterPosition',[0 0 1 1]); % Set figure window si
 colormap('parula'); % Set color map
 
 subplot(3,4,1); % Create subplot
-imagesc(xaxis,yaxis,filter1);axis('image'); % Display pinhole filter
-xlabel('x, m');ylabel('y, m'); % Set axis labels
+imagesc(fxaxis,fyaxis,filter1);axis('image'); % Display pinhole filter
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
 title('Pinhole'); % Set title
 
 subplot(3,4,2); % Create subplot
-imagesc(fxaxis,fyaxis,img1);axis('image'); % Display image after pinhole filtering
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+imagesc(xaxis,yaxis,img1);axis('image'); % Display image after pinhole filtering
+xlabel('x, m');ylabel('y, m'); % Set axis labels
 colorbar('EastOutside'); % Add color bar
 title('Pinhole - Image plane'); % Set title
 
 subplot(3,4,3); % Create subplot
-mesh(fxaxis,fyaxis,img1); % Plot intensity distribution after pinhole filtering (3D mesh plot)
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+mesh(xaxis,yaxis,img1); % Plot intensity distribution after pinhole filtering (3D mesh plot)
+xlabel('x, m');ylabel('y, m');zlabel('Intensity'); % Set axis labels
 title('Intensity values'); % Set title
 
 subplot(3,4,4); % Create subplot
@@ -76,19 +76,19 @@ legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and ax
 title('Slice through centers of object and image'); % Set title
 
 subplot(3,4,5); % Create subplot
-imagesc(xaxis,yaxis,filter2);axis('image'); % Display pinhole filter
-xlabel('x, m');ylabel('y, m'); % Set axis labels
+imagesc(fxaxis,fyaxis,filter2);axis('image'); % Display pinhole filter
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
 title('High filter'); % Set title
 
 subplot(3,4,6); % Create subplot
-imagesc(fxaxis,fyaxis,img2);axis('image'); % Display image after pinhole filtering
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+imagesc(xaxis,yaxis,img2);axis('image'); % Display image after pinhole filtering
+xlabel('x, m');ylabel('y, m'); % Set axis labels
 colorbar('EastOutside'); % Add color bar
 title('High filter - Image plane'); % Set title
 
 subplot(3,4,7); % Create subplot
-mesh(fxaxis,fyaxis,img2); % Plot intensity distribution after pinhole filtering (3D mesh plot)
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+mesh(xaxis,yaxis,img2); % Plot intensity distribution after pinhole filtering (3D mesh plot)
+xlabel('x, m');ylabel('y, m');zlabel('Intensity'); % Set axis labels
 title('Intensity values'); % Set title
 
 subplot(3,4,8); % Create subplot
@@ -98,19 +98,19 @@ legend('object','image');xlabel('x, m');ylabel('Intensity'); % Add legend and ax
 title('Slice through centers of object and image'); % Set title
 
 subplot(3,4,9); % Create subplot
-imagesc(xaxis,yaxis,filter4);axis('image'); % Display 3rd Fresnel zone filter
-xlabel('x, m');ylabel('y, m'); % Set axis labels
+imagesc(fxaxis,fyaxis,filter4);axis('image'); % Display 3rd Fresnel zone filter
+xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
 title('3rd Fresnel zone'); % Set title
 
 subplot(3,4,10); % Create subplot
-imagesc(fxaxis,fyaxis,img4);axis('image'); % Display image after 3rd Fresnel zone filtering
-xlabel('fx, cycles/m');ylabel('fy, cycles/m'); % Set axis labels
+imagesc(xaxis,yaxis,img4);axis('image'); % Display image after 3rd Fresnel zone filtering
+xlabel('x, m');ylabel('y, m'); % Set axis labels
 colorbar('EastOutside'); % Add color bar
 title('3F zone - Image plane'); % Set title
 
 subplot(3,4,11); % Create subplot
-mesh(fxaxis,fyaxis,img4); % Plot intensity distribution after 3rd Fresnel zone filtering (3D mesh plot)
-xlabel('fx, cycles/m');ylabel('fy, cycles/m');zlabel('Intensity'); % Set axis labels
+mesh(xaxis,yaxis,img4); % Plot intensity distribution after 3rd Fresnel zone filtering (3D mesh plot)
+xlabel('x, m');ylabel('y, m');zlabel('Intensity'); % Set axis labels
 title('Intensity values'); % Set title
 
 subplot(3,4,12); % Create subplot
