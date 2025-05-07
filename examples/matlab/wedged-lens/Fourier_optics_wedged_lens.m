@@ -43,7 +43,8 @@ img_filtered = real(ifft2(ifftshift(F_filtered)));
 % Display results
 figure(1);
 subplot(1,2,1);
-imagesc(magnitude_spectrum);
+% Method 1: Specify range directly in imagesc
+imagesc(magnitude_spectrum, [0, max(magnitude_spectrum(:))]);
 colormap('parula');
 colorbar;
 axis('image');
@@ -52,13 +53,16 @@ title('Original Fourier Transform');
 subplot(1,2,2);
 imagesc(img);
 colormap('parula');
+% Method 2: Use caxis to set range
+caxis([0, 1]);  % For normalized image data
 colorbar;
 axis('image');
 title('Original Image');
 
 figure(2);
 subplot(1,2,1);
-imagesc(magnitude_spectrum_filtered);
+% Method 1: Specify range directly in imagesc
+imagesc(magnitude_spectrum_filtered, [0, max(magnitude_spectrum_filtered(:))]);
 colormap('parula');
 colorbar;
 axis('image');
@@ -67,6 +71,8 @@ title('Filtered Fourier Transform (1&2&3 blocked)');
 subplot(1,2,2);
 imagesc(img_filtered);
 colormap('parula');
+% Method 2: Use caxis to set range
+caxis([min(img_filtered(:)), max(img_filtered(:))]);
 colorbar;
 axis('image');
 title('Filtered Image');
