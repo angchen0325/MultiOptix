@@ -1,8 +1,15 @@
-\documentclass[pra,superscriptaddress,reprint]{revtex4-1}
+\documentclass[pra,superscriptaddress,reprint,a4paper]{revtex4-1}
 
 \usepackage{amsmath,amssymb,graphicx,color,bm}
 \usepackage{soul} %\st \hl
 \usepackage{titlesec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+\fancyfoot[C]{\thepage} % Place page number at center of footer
+\renewcommand{\headrulewidth}{0pt} % Remove header rule
+\renewcommand{\footrulewidth}{0pt} % Remove footer rule
+
 \titleformat{\section}{\normalfont\large\bfseries\centering}{\thesection.}{1em}{}
 \titleformat{\subsection}{\normalfont\normalsize\bfseries\centering}{\thesection.\thesubsection.}{1em}{}
 \renewcommand{\thesection}{\Roman{section}}
@@ -45,14 +52,6 @@ of diffraction-based overlay (DBO) used in semiconductor manufacturing.
 % \end{widetext}
 
 
-
-% \begin{figure}[b]
-% \centering
-% % Requires \usepackage{graphicx}
-% \includegraphics[scale=1]{figure3}\\
-% \caption{SHEL at an interface (e.g. air-TI) with $\varepsilon_1 = 1, \mu_1=1, \varepsilon_2 = 16, \mu_2 = 1$. (a) Illustration of a wave packet out of a generic polarizer. Two orthogonal polarizations $|H\rangle$ and $|V\rangle$ are shown. (b) Theoretical displacements of the spin components for horizontally and vertically polarized incident photons. $\delta^{\mathrm{H}_c}$ and $\delta^{\mathrm{V}_c}$ indicate the displacements of the spin components induced by the TME effect for corresponding polarizations. The upper panel plots the displacements for $|+\rangle$-component and the lower panel for the $|-\rangle$-component. (c) Position displacements for the right- and left-circularly polarized wave packets, corresponding to $m = + i$ and $m = -i$, respectively.  \label{fig:3}}
-% \end{figure}
-
 \appendix
 
 \section{Fourier transformation of an image~\label{sec-a:ft-an0image}}
@@ -85,7 +84,12 @@ $[-\frac{N_x}{2L_x}, \frac{N_x}{2L_x}]$ and $[-\frac{N_y}{2L_y}, \frac{N_y}{2L_y
 
 We give an example with FFT in MATLAB, as shown in Fig.
 
-
+\begin{figure}[t]
+\centering
+% Requires \usepackage{graphicx}
+\includegraphics[scale=1]{./fft_square_lattice.pdf}\\
+\caption{\label{fig:square_lattice}}
+\end{figure}
 
 % \section{ THE PHOTONIC BAND STRUCTURES OF THE 1D TI PHCS~\label{sec:a1}}
 % With Eqs. \eqref{eq:6}, \eqref{eq:7} and \eqref{eq:24}, we can obtain the elements of $\mathcal{M}$ for the 1D TI PhC as follows,
