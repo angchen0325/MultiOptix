@@ -60,11 +60,11 @@ subplot(1,2,2);
 % imagesc(fxaxis,fyaxis,log(fft_magnitude+0.1)); axis('image');
 imagesc(fxaxis,fyaxis,fft_magnitude); axis('image');
 % Define plot range for Fourier transform (in cycles/meter)
-plot_range = 5e7; % 5e7 cycles/meter, adjust this value as needed
+plot_range = 10e7; % 5e7 cycles/meter, adjust this value as needed
 % Set the display range for x and y axes
 xlim([-plot_range plot_range]);
 ylim([-plot_range plot_range]);
-clim([0, 1e5]);  
+clim([0, 0.1e5]);  
 title('Fourier Transform');
 xlabel('Spatial Frequency (cycles/m)'); ylabel('Spatial Frequency (cycles/m)');
 colorbar('EastOutside'); 
