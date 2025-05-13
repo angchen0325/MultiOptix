@@ -18,7 +18,7 @@ RSpace = double(results{2});
 
 % Plot the R spectrum
 figure(1);
-plot(omegaSpace, RSpace, 'r'); 
+plot(omegaSpace, RSpace, 'ro-'); 
 grid on;
 xlabel('Frequency (2\pic/a)');
 ylabel('Reflectance');
