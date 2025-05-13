@@ -46,7 +46,7 @@ end
 
 % Display the original pattern
 subplot(1,2,1);
-imagesc(xaxis,yaxis,pattern); axis('image');
+imagesc(xaxis,yaxis,pattern); axis('image'); colormap(flipud(gray));
 title('Original Pattern (Square Lattice)');
 xlabel('X size (m)'); ylabel('Y size (m)');
 colorbar('EastOutside'); 
