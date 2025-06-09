@@ -1,7 +1,10 @@
 %% Set python venv 'nanocompute'
 % terminate(pyenv); % Comment this line on Mac and Uncomment on Windows
+
+% MacOS env: '/Users/apple/VenvPy/nanocompute/bin/python3'
+% Win11 env: 'C:\Users\chena\miniconda3\envs\nanocompute\python.exe
 pyenv('Version', ...
-'C:\Users\chena\miniconda3\envs\nanocompute\python.exe', ...
+'/Users/apple/VenvPy/nanocompute/bin/python3', ...
 'ExecutionMode','OutOfProcess');
 
 %% Matlab call python script
@@ -25,7 +28,7 @@ RSpace = pylist2double(results{2});
 
 % Plot the R spectrum
 figure(1);
-plot(omegaSpace, RSpace, 'r'); 
+plot(omegaSpace, RSpace, 'ro-'); 
 grid on;
 xlabel('Frequency (2\pic/a)');
 ylabel('Reflectance');
