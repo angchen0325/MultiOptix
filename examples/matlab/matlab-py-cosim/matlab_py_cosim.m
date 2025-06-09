@@ -1,6 +1,7 @@
 %% Set python venv 'nanocompute'
+% terminate(pyenv); % Comment this line on Mac and Uncomment on Windows
 pyenv('Version', ...
-'/Users/apple/VenvPy/nanocompute/bin/python3', ...
+'C:\Users\chena\miniconda3\envs\nanocompute\python.exe', ...
 'ExecutionMode','OutOfProcess');
 
 %% Matlab call python script
@@ -13,12 +14,18 @@ tStart = tic;
 % Calculate reflection of the nanostructure 
 phc = py.importlib.import_module('matlab_py_cosim');
 results = phc.calc_rspace();
-omegaSpace = double(results{1});
-RSpace = double(results{2});
+
+% Use user-defined function 'pylist2double' on Windows,
+% for MATLAB 2021b, matching the conda env 'S4' with python3.7;
+% Use build-in function 'double' on Mac for MATLAB >=2022 versions,
+% or you can also use 'pylistdouble'
+omegaSpace = pylist2double(results{1});
+RSpace = pylist2double(results{2});
+
 
 % Plot the R spectrum
 figure(1);
-plot(omegaSpace, RSpace, 'ro-'); 
+plot(omegaSpace, RSpace, 'r'); 
 grid on;
 xlabel('Frequency (2\pic/a)');
 ylabel('Reflectance');
