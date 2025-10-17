@@ -1,6 +1,9 @@
 *.asv
 *.pdf
 
+## Ignore source files
+codes/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
