@@ -2,7 +2,7 @@
 *.pdf
 
 ## Ignore source files
-codes/
+code/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
