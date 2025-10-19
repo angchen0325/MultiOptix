@@ -24,7 +24,7 @@
 \title{\Large Base models in YieldStar optics}
 
 \author{Ang Chen}
-\affiliation{MZ optoelectronics, Shanghai, China}
+% \affiliation{MZ semiconductor, Shanghai, China}
 \thanks{chenang@outlook.com}
 
 
@@ -38,7 +38,7 @@ of diffraction-based overlay (DBO) used in semiconductor manufacturing.
 % \tableofcontents
 
 \section{Introduction~\label{sec:1}}
-\subsection{Test}
+% \subsection{Test}
 
 
 % \begin{widetext}
@@ -54,7 +54,13 @@ of diffraction-based overlay (DBO) used in semiconductor manufacturing.
 
 \appendix
 
-\section{Fourier transformation of an image~\label{sec-a:ft-an0image}}
+\section{Fourier transformation~\label{appx-a:ft}}
+In Appendix~\ref{appx-a:ft}, we briefly review the Fourier transform (FT) in one-dimensional (1D) signal processing and
+two-dimensional (2D) image processing, respectively.
+\subsection{1D Fourier transform of a signal~\label{appx-a1:1dft}}
+
+\subsection{2D Fourier transform of an image~\label{appx-a2:2dft}}
+
 When computing the two-dimensional (2D) Fourier transform (FT) of an image, the output represents the frequency
 components of the  in the spatial frequency domain.
 Now let's determine the frequency range associated with the Fourier transform, based on the dimension of the image
@@ -80,7 +86,7 @@ The frequency bins (in cycles per nanometer) in $x$ and $y$ directions are space
 \Delta f_x = \frac{1}{L_x},~\Delta f_y = \frac{1}{L_y},
 \end{equation}
 and thus the frequency components in the Fourier transform will range from 
-$[-\frac{N_x}{2L_x}, \frac{N_x}{2L_x}]$ and $[-\frac{N_y}{2L_y}, \frac{N_y}{2L_y}]$.
+$[-N_x/(2L_x), N_x/(2L_x)]$ and $[-N_y/(2L_y), N_y/(2L_y)]$.
 
 We give an example with FFT in MATLAB, as shown in Fig.
 
